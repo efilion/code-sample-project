@@ -6,11 +6,11 @@ const typeDefs = gql`
         id: ID!
         title: String!
         description: String!
-        release_year: Int!
+        releaseYear: Int!
         duration: Int!
         rating: Int!
-        like_count: Int!
-        dislike_count: Int!
+        likeCount: Int!
+        dislikeCount: Int!
     }
 
     type Query {
@@ -43,7 +43,7 @@ const typeDefs = gql`
         id: ID
         title: String!
         description: String!
-        release_year: Int!
+        releaseYear: Int!
         duration: Int!
         rating: Int!
     }
@@ -56,11 +56,11 @@ const typeDefs = gql`
         id: ID!
         title: String
         description: String
-        release_year: Int
+        releaseYear: Int
         duration: Int
         rating: Int
-        like_count: Int
-        dislike_count: Int
+        likeCount: Int
+        dislikeCount: Int
     }
 
     type UpdateMoviePayload {

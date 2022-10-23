@@ -35,13 +35,13 @@ const resolvers: Resolvers = {
     Mutation: {
 
         createMovie: (parent, { input }) => {
-            let { id, title, description, release_year, duration, rating } = input;
+            let { id, title, description, releaseYear, duration, rating } = input;
             return prisma.movie.create({
                 data: {
                     id: (id != null) ? parseInt(id) : undefined,
                     title,
                     description,
-                    release_year,
+                    releaseYear,
                     duration,
                     rating
                 }
@@ -59,7 +59,7 @@ const resolvers: Resolvers = {
         },
 
         updateMovie: (parent, { input }) => {
-            let { id, title, description, release_year, duration, rating, like_count, dislike_count } = input;
+            let { id, title, description, releaseYear, duration, rating, likeCount, dislikeCount } = input;
             return prisma.movie.update({
                 where: {
                     id: parseInt(id)
@@ -67,11 +67,11 @@ const resolvers: Resolvers = {
                 data: {
                     title,
                     description,
-                    release_year,
+                    releaseYear,
                     duration,
                     rating,
-                    like_count,
-                    dislike_count
+                    likeCount,
+                    dislikeCount
                 }
             })
             .then(movie => ({movie}))
@@ -83,7 +83,7 @@ const resolvers: Resolvers = {
                     id: parseInt(input.id)
                 },
                 data: {
-                    like_count: {
+                    likeCount: {
                         increment: 1
                     }
                 }
@@ -97,7 +97,7 @@ const resolvers: Resolvers = {
                     id: parseInt(input.id)
                 },
                 data: {
-                    dislike_count: {
+                    dislikeCount: {
                         increment: 1
                     }
                 }

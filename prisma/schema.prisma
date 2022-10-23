@@ -11,10 +11,10 @@ model Movie {
   id            Int    @id @default(autoincrement())
   title         String
   description   String
-  release_year  Int
+  releaseYear  Int    @map("release_year")
   duration      Int
   rating        Int
-  like_count    Int    @default(0)
-  dislike_count Int    @default(0)
+  likeCount    Int    @default(0) @map("like_count")
+  dislikeCount Int    @default(0) @map("dislike_count")
   @@map("movie")
 }

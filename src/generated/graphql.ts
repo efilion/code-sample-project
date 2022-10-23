@@ -21,7 +21,7 @@ export type CreateMovieInput = {
   duration: Scalars['Int'];
   id?: InputMaybe<Scalars['ID']>;
   rating: Scalars['Int'];
-  release_year: Scalars['Int'];
+  releaseYear: Scalars['Int'];
   title: Scalars['String'];
 };
 
@@ -60,12 +60,12 @@ export type LikeMoviePayload = {
 export type Movie = {
   __typename?: 'Movie';
   description: Scalars['String'];
-  dislike_count: Scalars['Int'];
+  dislikeCount: Scalars['Int'];
   duration: Scalars['Int'];
   id: Scalars['ID'];
-  like_count: Scalars['Int'];
+  likeCount: Scalars['Int'];
   rating: Scalars['Int'];
-  release_year: Scalars['Int'];
+  releaseYear: Scalars['Int'];
   title: Scalars['String'];
 };
 
@@ -135,12 +135,12 @@ export type StringInput = {
 
 export type UpdateMovieInput = {
   description?: InputMaybe<Scalars['String']>;
-  dislike_count?: InputMaybe<Scalars['Int']>;
+  dislikeCount?: InputMaybe<Scalars['Int']>;
   duration?: InputMaybe<Scalars['Int']>;
   id: Scalars['ID'];
-  like_count?: InputMaybe<Scalars['Int']>;
+  likeCount?: InputMaybe<Scalars['Int']>;
   rating?: InputMaybe<Scalars['Int']>;
-  release_year?: InputMaybe<Scalars['Int']>;
+  releaseYear?: InputMaybe<Scalars['Int']>;
   title?: InputMaybe<Scalars['String']>;
 };
 
@@ -286,12 +286,12 @@ export type LikeMoviePayloadResolvers<ContextType = any, ParentType extends Reso
 
 export type MovieResolvers<ContextType = any, ParentType extends ResolversParentTypes['Movie'] = ResolversParentTypes['Movie']> = {
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  dislike_count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  dislikeCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   duration?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  like_count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  likeCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   rating?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  release_year?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  releaseYear?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
