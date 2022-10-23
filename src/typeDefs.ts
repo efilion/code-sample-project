@@ -1,0 +1,95 @@
+import { gql } from "graphql-tag";
+
+const typeDefs = gql`
+
+    type Movie {
+        id: ID!
+        title: String!
+        description: String!
+        release_year: Int!
+        duration: Int!
+        rating: Int!
+        like_count: Int!
+        dislike_count: Int!
+    }
+
+    type Query {
+        findMovies(filter: MovieFilter): MovieResultList!
+        getMovie(id: ID!): Movie
+    }
+
+    type Mutation {
+        createMovie(input: CreateMovieInput!): CreateMoviePayload!
+        deleteMovie(input: DeleteMovieInput!): DeleteMoviePayload!
+        updateMovie(input: UpdateMovieInput!): UpdateMoviePayload!
+        likeMovie(input: LikeMovieInput!): LikeMoviePayload!
+        dislikeMovie(input: DislikeMovieInput!): DislikeMoviePayload!
+    }
+
+    type MovieResultList {
+        items: [Movie!]!
+    }
+
+    input MovieFilter {
+        title: StringInput
+    }
+
+    input StringInput {
+        contains: String
+        startsWith: String
+    }
+
+    input CreateMovieInput {
+        id: ID
+        title: String!
+        description: String!
+        release_year: Int!
+        duration: Int!
+        rating: Int!
+    }
+
+    type CreateMoviePayload {
+        movie: Movie
+    }
+
+    input UpdateMovieInput {
+        id: ID!
+        title: String
+        description: String
+        release_year: Int
+        duration: Int
+        rating: Int
+        like_count: Int
+        dislike_count: Int
+    }
+
+    type UpdateMoviePayload {
+        movie: Movie
+    }
+
+    input DeleteMovieInput {
+        id: ID!
+    }
+
+    type DeleteMoviePayload {
+        movie: Movie
+    }
+
+    input LikeMovieInput {
+        id: ID!
+    }
+
+    type LikeMoviePayload {
+        movie: Movie
+    }
+
+    input DislikeMovieInput {
+        id: ID!
+    }
+
+    type DislikeMoviePayload {
+        movie: Movie
+    }
+`;
+
+export default typeDefs;

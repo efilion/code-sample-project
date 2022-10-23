@@ -6,7 +6,7 @@ Implements an API to manage, search, and like/dislike movies.
 - GraphQL
 - Node.js
 - TypeScript
-- SQLite
+- PostgreSQL
 
 **Functional Specifications:**
 - Create, read, update, delete movies

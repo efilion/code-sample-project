@@ -1,0 +1,12 @@
+overwrite: true
+schema: "./src/typeDefs.ts"
+generates:
+  src/generated/graphql.ts:
+    config:
+      mappers:
+        Movie: .prisma/client#Movie as MovieModel
+      inputMaybeValue: undefined | T
+    plugins:
+      - typescript
+      - typescript-resolvers
+ 
