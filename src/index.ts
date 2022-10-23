@@ -109,7 +109,8 @@ const resolvers: Resolvers = {
 
 const server = new ApolloServer<BaseContext>({
     typeDefs,
-    resolvers
+    resolvers,
+    introspection: true
 });
 
 const { url } = await startStandaloneServer(server, {
