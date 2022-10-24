@@ -16,7 +16,7 @@ const noMovieFoundByGivenID = (e:any) => {
         return Promise.resolve(null);
     }
     else {
-        return Promise.reject();
+        return Promise.reject(e);
     }
 }
 
