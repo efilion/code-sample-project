@@ -15,7 +15,7 @@ const resolvers: Resolvers = {
 
         findMovies: (parent, { filter }) => {
             let contains = filter?.title?.contains;
-            let startsWith = filter?.title?.contains;
+            let startsWith = filter?.title?.startsWith;
             return prisma.movie.findMany({
                 where: {
                     title: {
