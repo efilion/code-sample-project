@@ -9,6 +9,17 @@ import _ from 'lodash';
 
 const prisma = new PrismaClient();
 
+const noMovieFoundByGivenID = (e:any) => {
+    if (e instanceof Prisma.PrismaClientKnownRequestError
+        && e.code === 'P2025'
+    ) {
+        return Promise.resolve(null);
+    }
+    else {
+        return Promise.reject();
+    }
+}
+
 const resolvers: Resolvers = {
 
     Query: {
@@ -53,7 +64,7 @@ const resolvers: Resolvers = {
                 if (e instanceof Prisma.PrismaClientKnownRequestError
                     && e.code === 'P2002'
                     && _.isEqual(e.meta, {target: ['id']})
-                ) { // Optional ID already is not unique
+                ) { // Optional ID is not unique
                     return {
                         status: Status.Fail,
                         errors: [{message: "Identifier already exists."} as IdentifierAlreadyExistsProblem]
@@ -72,18 +83,12 @@ const resolvers: Resolvers = {
                     id: parseInt(input.id)
                 }
             })
+            .catch(noMovieFoundByGivenID)
             .then(movie => ({movie}))
             .catch((e) => {
-                if (e instanceof Prisma.PrismaClientKnownRequestError
-                    && e.code === 'P2025'
-                ) { // No movie found with given ID.
-                    return {movie: null};
-                }
-                else {
-                    console.log(e);
-                    throw e;
-                }
-            })
+                console.log(e);
+                throw e;
+            });
         },
 
         updateMovie: (parent, { input }) => {
@@ -102,7 +107,12 @@ const resolvers: Resolvers = {
                     dislikeCount
                 }
             })
+            .catch(noMovieFoundByGivenID)
             .then(movie => ({movie}))
+            .catch((e) => {
+                console.log(e);
+                throw e;
+            });
         },
 
         likeMovie: (parent, { input }) => {
@@ -116,7 +126,12 @@ const resolvers: Resolvers = {
                     }
                 }
             })
+            .catch(noMovieFoundByGivenID)
             .then(movie => ({movie}))
+            .catch((e) => {
+                console.log(e);
+                throw e;
+            });
         },
 
         dislikeMovie: (parent, { input }) => {
@@ -130,7 +145,12 @@ const resolvers: Resolvers = {
                     }
                 }
             })
+            .catch(noMovieFoundByGivenID)
             .then(movie => ({movie}))
+            .catch((e) => {
+                console.log(e);
+                throw e;
+            });
         }
     },
 
