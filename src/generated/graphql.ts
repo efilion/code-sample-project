@@ -68,13 +68,20 @@ export type LikeMoviePayload = {
 
 export type Movie = {
   __typename?: 'Movie';
+  /** Summarizes the film's storyline. */
   description: Scalars['String'];
+  /** How many times the movie has been disliked. */
   dislikeCount: Scalars['Int'];
+  /** Total running time in seconds. */
   duration: Scalars['Int'];
   id: Scalars['ID'];
+  /** How many times the movie has been liked. */
   likeCount: Scalars['Int'];
+  /** On a scale from 0 to 100. */
   rating: Scalars['Int'];
+  /** First cinematic release. */
   releaseYear: Scalars['Int'];
+  /** Movie title. */
   title: Scalars['String'];
 };
 
@@ -89,10 +96,65 @@ export type MovieResultList = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  /**
+   * Add a new movie to the database.
+   *
+   * ---
+   *
+   *     mutation CreateMovie($input: CreateMovieInput!) {
+   *         createMovie(input: $input) {
+   *             movide {
+   *                 id
+   *                 title
+   *             }
+   *         }
+   *         status
+   *         errors {
+   *             ... on ProblemInterface {
+   *                 message
+   *             }
+   *         }
+   *     }
+   *     {
+   *         "input": {
+   *             "title": "Avatar",
+   *             "description": "A paraplegic Marine dispatched to the moon Pandora on a unique mission becomes torn between following his orders and protecting the world he feels is his home.",
+   *             "releaseYear": 2009,
+   *             "duration": 10920, // seconds
+   *             "rating": 78 // out of 100
+   *         }
+   *     }
+   */
   createMovie: CreateMoviePayload;
+  /** Remove a movie from the database. Returns null movie if no movie is found by the given ID. */
   deleteMovie: DeleteMoviePayload;
+  /** Increment a movie's dislike count. Returns null movie if no movie is found by the given ID. */
   dislikeMovie: DislikeMoviePayload;
+  /** Increment a movie's like count. Returns null movie if no movie is found by the given ID. */
   likeMovie: LikeMoviePayload;
+  /**
+   * Change one or more fields on a movie.
+   *
+   * ---
+   *
+   *     mutation UpdateMovie($input: UpdateMovieInput!) {
+   *         updateMovie(input: $input) {
+   *             movie {
+   *                 id
+   *                 title
+   *                 description
+   *                 rating
+   *             }
+   *         }
+   *     }
+   *     {
+   *         "input": {
+   *             "id": 1,
+   *             "description": "R2-D2 leads a mission to save the galaxy from the evil empire.",
+   *             "rating": 100
+   *         }
+   *     }
+   */
   updateMovie: UpdateMoviePayload;
 };
 
@@ -127,7 +189,29 @@ export type ProblemInterface = {
 
 export type Query = {
   __typename?: 'Query';
+  /**
+   * List out all movies. Optionally, provide a filter to search by title.
+   *
+   * ---
+   *
+   *     query FindMovies($filter: MovieFilter) {
+   *         findMovies(filter: $filter) {
+   *             items {
+   *                 id
+   *                 title
+   *             }
+   *         }
+   *     }
+   *     {
+   *         "filter": {
+   *             "title": {
+   *                 "startsWith": "Star"
+   *             }
+   *         }
+   *     }
+   */
   findMovies: MovieResultList;
+  /** Null if no movie is found matching the given ID. */
   getMovie?: Maybe<Movie>;
 };
 
