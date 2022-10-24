@@ -27,8 +27,12 @@ export type CreateMovieInput = {
 
 export type CreateMoviePayload = {
   __typename?: 'CreateMoviePayload';
+  errors?: Maybe<Array<CreateMovieProblems>>;
   movie?: Maybe<Movie>;
+  status: Status;
 };
+
+export type CreateMovieProblems = IdentifierAlreadyExistsProblem;
 
 export type DeleteMovieInput = {
   id: Scalars['ID'];
@@ -46,6 +50,11 @@ export type DislikeMovieInput = {
 export type DislikeMoviePayload = {
   __typename?: 'DislikeMoviePayload';
   movie?: Maybe<Movie>;
+};
+
+export type IdentifierAlreadyExistsProblem = ProblemInterface & {
+  __typename?: 'IdentifierAlreadyExistsProblem';
+  message: Scalars['String'];
 };
 
 export type LikeMovieInput = {
@@ -112,6 +121,10 @@ export type MutationUpdateMovieArgs = {
   input: UpdateMovieInput;
 };
 
+export type ProblemInterface = {
+  message: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
   findMovies: MovieResultList;
@@ -127,6 +140,11 @@ export type QueryFindMoviesArgs = {
 export type QueryGetMovieArgs = {
   id: Scalars['ID'];
 };
+
+export enum Status {
+  Fail = 'FAIL',
+  Success = 'SUCCESS'
+}
 
 export type StringInput = {
   contains?: InputMaybe<Scalars['String']>;
@@ -220,12 +238,14 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   CreateMovieInput: CreateMovieInput;
-  CreateMoviePayload: ResolverTypeWrapper<Omit<CreateMoviePayload, 'movie'> & { movie?: Maybe<ResolversTypes['Movie']> }>;
+  CreateMoviePayload: ResolverTypeWrapper<Omit<CreateMoviePayload, 'errors' | 'movie'> & { errors?: Maybe<Array<ResolversTypes['CreateMovieProblems']>>, movie?: Maybe<ResolversTypes['Movie']> }>;
+  CreateMovieProblems: ResolversTypes['IdentifierAlreadyExistsProblem'];
   DeleteMovieInput: DeleteMovieInput;
   DeleteMoviePayload: ResolverTypeWrapper<Omit<DeleteMoviePayload, 'movie'> & { movie?: Maybe<ResolversTypes['Movie']> }>;
   DislikeMovieInput: DislikeMovieInput;
   DislikeMoviePayload: ResolverTypeWrapper<Omit<DislikeMoviePayload, 'movie'> & { movie?: Maybe<ResolversTypes['Movie']> }>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
+  IdentifierAlreadyExistsProblem: ResolverTypeWrapper<IdentifierAlreadyExistsProblem>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   LikeMovieInput: LikeMovieInput;
   LikeMoviePayload: ResolverTypeWrapper<Omit<LikeMoviePayload, 'movie'> & { movie?: Maybe<ResolversTypes['Movie']> }>;
@@ -233,7 +253,9 @@ export type ResolversTypes = {
   MovieFilter: MovieFilter;
   MovieResultList: ResolverTypeWrapper<Omit<MovieResultList, 'items'> & { items: Array<ResolversTypes['Movie']> }>;
   Mutation: ResolverTypeWrapper<{}>;
+  ProblemInterface: ResolversTypes['IdentifierAlreadyExistsProblem'];
   Query: ResolverTypeWrapper<{}>;
+  Status: Status;
   String: ResolverTypeWrapper<Scalars['String']>;
   StringInput: StringInput;
   UpdateMovieInput: UpdateMovieInput;
@@ -244,12 +266,14 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
   CreateMovieInput: CreateMovieInput;
-  CreateMoviePayload: Omit<CreateMoviePayload, 'movie'> & { movie?: Maybe<ResolversParentTypes['Movie']> };
+  CreateMoviePayload: Omit<CreateMoviePayload, 'errors' | 'movie'> & { errors?: Maybe<Array<ResolversParentTypes['CreateMovieProblems']>>, movie?: Maybe<ResolversParentTypes['Movie']> };
+  CreateMovieProblems: ResolversParentTypes['IdentifierAlreadyExistsProblem'];
   DeleteMovieInput: DeleteMovieInput;
   DeleteMoviePayload: Omit<DeleteMoviePayload, 'movie'> & { movie?: Maybe<ResolversParentTypes['Movie']> };
   DislikeMovieInput: DislikeMovieInput;
   DislikeMoviePayload: Omit<DislikeMoviePayload, 'movie'> & { movie?: Maybe<ResolversParentTypes['Movie']> };
   ID: Scalars['ID'];
+  IdentifierAlreadyExistsProblem: IdentifierAlreadyExistsProblem;
   Int: Scalars['Int'];
   LikeMovieInput: LikeMovieInput;
   LikeMoviePayload: Omit<LikeMoviePayload, 'movie'> & { movie?: Maybe<ResolversParentTypes['Movie']> };
@@ -257,6 +281,7 @@ export type ResolversParentTypes = {
   MovieFilter: MovieFilter;
   MovieResultList: Omit<MovieResultList, 'items'> & { items: Array<ResolversParentTypes['Movie']> };
   Mutation: {};
+  ProblemInterface: ResolversParentTypes['IdentifierAlreadyExistsProblem'];
   Query: {};
   String: Scalars['String'];
   StringInput: StringInput;
@@ -265,8 +290,14 @@ export type ResolversParentTypes = {
 };
 
 export type CreateMoviePayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateMoviePayload'] = ResolversParentTypes['CreateMoviePayload']> = {
+  errors?: Resolver<Maybe<Array<ResolversTypes['CreateMovieProblems']>>, ParentType, ContextType>;
   movie?: Resolver<Maybe<ResolversTypes['Movie']>, ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['Status'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CreateMovieProblemsResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateMovieProblems'] = ResolversParentTypes['CreateMovieProblems']> = {
+  __resolveType: TypeResolveFn<'IdentifierAlreadyExistsProblem', ParentType, ContextType>;
 };
 
 export type DeleteMoviePayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['DeleteMoviePayload'] = ResolversParentTypes['DeleteMoviePayload']> = {
@@ -276,6 +307,11 @@ export type DeleteMoviePayloadResolvers<ContextType = any, ParentType extends Re
 
 export type DislikeMoviePayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['DislikeMoviePayload'] = ResolversParentTypes['DislikeMoviePayload']> = {
   movie?: Resolver<Maybe<ResolversTypes['Movie']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type IdentifierAlreadyExistsProblemResolvers<ContextType = any, ParentType extends ResolversParentTypes['IdentifierAlreadyExistsProblem'] = ResolversParentTypes['IdentifierAlreadyExistsProblem']> = {
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -309,6 +345,11 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   updateMovie?: Resolver<ResolversTypes['UpdateMoviePayload'], ParentType, ContextType, RequireFields<MutationUpdateMovieArgs, 'input'>>;
 };
 
+export type ProblemInterfaceResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProblemInterface'] = ResolversParentTypes['ProblemInterface']> = {
+  __resolveType: TypeResolveFn<'IdentifierAlreadyExistsProblem', ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+};
+
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   findMovies?: Resolver<ResolversTypes['MovieResultList'], ParentType, ContextType, Partial<QueryFindMoviesArgs>>;
   getMovie?: Resolver<Maybe<ResolversTypes['Movie']>, ParentType, ContextType, RequireFields<QueryGetMovieArgs, 'id'>>;
@@ -321,12 +362,15 @@ export type UpdateMoviePayloadResolvers<ContextType = any, ParentType extends Re
 
 export type Resolvers<ContextType = any> = {
   CreateMoviePayload?: CreateMoviePayloadResolvers<ContextType>;
+  CreateMovieProblems?: CreateMovieProblemsResolvers<ContextType>;
   DeleteMoviePayload?: DeleteMoviePayloadResolvers<ContextType>;
   DislikeMoviePayload?: DislikeMoviePayloadResolvers<ContextType>;
+  IdentifierAlreadyExistsProblem?: IdentifierAlreadyExistsProblemResolvers<ContextType>;
   LikeMoviePayload?: LikeMoviePayloadResolvers<ContextType>;
   Movie?: MovieResolvers<ContextType>;
   MovieResultList?: MovieResultListResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  ProblemInterface?: ProblemInterfaceResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   UpdateMoviePayload?: UpdateMoviePayloadResolvers<ContextType>;
 };

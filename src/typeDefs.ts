@@ -39,6 +39,15 @@ const typeDefs = gql`
         startsWith: String
     }
 
+    enum Status {
+        SUCCESS
+        FAIL
+    }
+
+    interface ProblemInterface {
+        message: String!
+    }
+
     input CreateMovieInput {
         id: ID
         title: String!
@@ -48,8 +57,16 @@ const typeDefs = gql`
         rating: Int!
     }
 
+    type IdentifierAlreadyExistsProblem implements ProblemInterface {
+        message: String!
+    }
+
+    union CreateMovieProblems = IdentifierAlreadyExistsProblem
+
     type CreateMoviePayload {
         movie: Movie
+        status: Status!
+        errors: [CreateMovieProblems!]
     }
 
     input UpdateMovieInput {

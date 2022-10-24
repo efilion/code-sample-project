@@ -1,9 +1,11 @@
 import { ApolloServer, BaseContext } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 
 import typeDefs from './typeDefs.js';
-import { Resolvers } from './generated/graphql';
+import { IdentifierAlreadyExistsProblem, Resolvers, Status } from './generated/graphql.js';
+
+import _ from 'lodash';
 
 const prisma = new PrismaClient();
 
@@ -46,7 +48,22 @@ const resolvers: Resolvers = {
                     rating
                 }
             })
-            .then(movie => ({movie}))
+            .then(movie => ({movie, status: Status.Success }))
+            .catch((e) => {
+                if (e instanceof Prisma.PrismaClientKnownRequestError
+                    && e.code === 'P2002'
+                    && _.isEqual(e.meta, {target: ['id']})
+                ) {
+                    return {
+                        status: Status.Fail,
+                        errors: [{message: "Identifier already exists."} as IdentifierAlreadyExistsProblem]
+                    } 
+                }
+                else {
+                    console.log(e);
+                    throw e
+                }
+            })
         },
 
         deleteMovie: (parent, { input }) => {
@@ -103,6 +120,15 @@ const resolvers: Resolvers = {
                 }
             })
             .then(movie => ({movie}))
+        }
+    },
+
+    CreateMovieProblems: {
+        __resolveType(obj) {
+            if(_.isEqual(['message'], Object.keys(obj))) {
+                return 'IdentifierAlreadyExistsProblem';
+            }
+            return null;
         }
     }
 };
