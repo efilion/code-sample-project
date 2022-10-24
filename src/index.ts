@@ -53,7 +53,7 @@ const resolvers: Resolvers = {
                 if (e instanceof Prisma.PrismaClientKnownRequestError
                     && e.code === 'P2002'
                     && _.isEqual(e.meta, {target: ['id']})
-                ) {
+                ) { // Optional ID already is not unique
                     return {
                         status: Status.Fail,
                         errors: [{message: "Identifier already exists."} as IdentifierAlreadyExistsProblem]
@@ -61,7 +61,7 @@ const resolvers: Resolvers = {
                 }
                 else {
                     console.log(e);
-                    throw e
+                    throw e;
                 }
             })
         },
@@ -73,6 +73,17 @@ const resolvers: Resolvers = {
                 }
             })
             .then(movie => ({movie}))
+            .catch((e) => {
+                if (e instanceof Prisma.PrismaClientKnownRequestError
+                    && e.code === 'P2025'
+                ) { // No movie found with given ID.
+                    return {movie: null};
+                }
+                else {
+                    console.log(e);
+                    throw e;
+                }
+            })
         },
 
         updateMovie: (parent, { input }) => {
