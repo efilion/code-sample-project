@@ -1,4 +1,4 @@
-# Ensemble Systems Backend Project
+# Code Sample Backend Project
 
 Implements an API to manage, search, and like/dislike movies.
 
